@@ -1,0 +1,34 @@
+<div class="content-header">
+    <h3><?php echo $this->__('Create New Job') ?></h3>
+</div>
+<ol class="wizard" data-wizard-steps="3">
+    <li class="wizard-todo">Select Category Details</li>
+    <li class="wizard-todo">Select Categories</li>
+    <li class="wizard-todo">Confirm Categories</li>
+</ol>
+<div class="straker-main-container border">
+    <h1><?php echo $this->__('Categories Details') ?></h1>
+    <p><?php echo $this->__('What category details would you like to translate?') ?></p>
+    <form action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/straker_category/attribute") ?>" >
+        <div class="category-attr" style="padding:0; margin-bottom: 30px;">
+            <div style="text-align: left;">
+                <input name="store" type="hidden" value="<?php echo $this->getSetupStoreId() ?>" />
+                <input type="checkbox" name="attr[name]" id="name" value="1" checked="checked">
+                <label for="name"><?php echo $this->__('Title') ?></label>
+                <br>
+                <input type="checkbox" name="attr[description]" id="description" value="1" checked="checked">
+                <label for="description"><?php echo $this->__('Description') ?></label>
+                <br>
+                <input type="checkbox" name="attr[meta_keywords]" id="meta_keywords" value="1" checked="checked">
+                <label for="meta_keywords"><?php echo $this->__('Meta Keywords') ?></label>
+                <br>
+                <input type="checkbox" name="attr[meta_description]" id="meta_description" value="1" checked="checked">
+                <label for="meta_description"><?php echo $this->__('Meta Description') ?></label>
+                <br>
+                <input type="checkbox" name="attr[meta_title]" id="meta_title" value="1" checked="checked">
+                <label for="meta_title"><?php echo $this->__('Meta Title') ?></label><br></div>
+            <div class="clear"></div>
+            <input type="submit" class="form-button right" value="Next" title="Next">
+        </div>
+    </form>
+</div>
