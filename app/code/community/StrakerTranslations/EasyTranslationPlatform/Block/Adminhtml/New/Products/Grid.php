@@ -122,7 +122,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Products_G
         if (in_array('name',$this->getAttrArray())) {
             $this->addColumn('name',
                 array(
-                    'header' => Mage::helper('catalog')->__('Name to translate'),
+                    'header' => Mage::helper('catalog')->__('Name to Translate'),
                     'index' => 'name',
                 ));
         }
@@ -138,7 +138,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Products_G
                 $attrModel = Mage::getModel('eav/entity_attribute')->loadByCode(4, $attr);
                 $this->addColumn($attr,
                     array(
-                        'header' => Mage::helper('catalog')->__($attrModel->getFrontendLabel()).' To translate',
+                        'header' => Mage::helper('catalog')->__($attrModel->getFrontendLabel()).' To Translate',
                         'index' => $attr,
                     ));
             }
