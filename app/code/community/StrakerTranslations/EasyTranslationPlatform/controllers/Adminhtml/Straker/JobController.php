@@ -20,10 +20,12 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_JobControlle
         //todo refresh all jobs that is waiting on a quote. This should be refactored into different process.
         $collection = Mage::getModel('strakertranslations_easytranslationplatform/job')
             ->getCollection()
-            ->addFieldToFilter('status_id', 2)
-            ->addFieldToFilter('quote', array('null' => true));
+            ->addFieldToFilter('status_id', array('lt' => 4));
         foreach($collection as $job){
-            $job->updateQuote();
+            $job = Mage::getModel('strakertranslations_easytranslationplatform/job')->load($job->getId());
+            if ( $job->updateTranslation() ){
+                Mage::getSingleton('core/session')->addSuccess($this->__('Job %s has been updated.', $job->getId()));
+            }
         }
 
         $this->_title($this->__('Straker Translations'))
@@ -43,40 +45,11 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_JobControlle
                 return false;
             }
 
-
-            switch ($job->getStatusName()){
-
-                Case 'QUEUED' :
-
-                    if ($job->getPaymentStatus()){
-                        if( $job->updateTranslation() ){
-                            Mage::getSingleton('core/session')->addSuccess($this->__('Job %s has been updated.', $job->getId()));
-                        }
-                    } else {
-
-                        if($job->updatePayment()){
-                            if( $job->updateTranslation() ){
-                                Mage::getSingleton('core/session')->addSuccess($this->__('Job %s has been updated.', $job->getId()));
-                            }
-
-                        }elseif($job->updateQuote()){
-                            Mage::getSingleton('core/session')->addSuccess($this->__('Job %s has been updated.', $job->getId()));
-                        }
-
-                    }
-
-                    $this->_redirect('*/*/');
-                    return;
-                    break;
-
-                default:
-                    if( $job->updateTranslation() ){
-                        Mage::getSingleton('core/session')->addSuccess($this->__('Job %s has been updated.', $job->getId()));
-                    }
-                    $this->_redirect('*/*/');
-                    return;
-
+            if( $job->updateTranslation() ){
+                Mage::getSingleton('core/session')->addSuccess($this->__('Job %s has been updated.', $job->getId()));
             }
+            $this->_redirect('*/*/');
+            return;
 
         }
 

@@ -70,6 +70,9 @@
                 });
             } else {
                 categoryRemove(node.id);
+                node.childNodes.each(function(c){
+                    c.getUI().check(0);
+                });
             }
             varienElementMethods.setHasChanges(node.getUI().checkbox);
         }, tree);

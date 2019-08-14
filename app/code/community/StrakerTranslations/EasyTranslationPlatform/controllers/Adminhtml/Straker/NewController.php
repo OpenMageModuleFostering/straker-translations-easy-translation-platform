@@ -73,6 +73,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_NewControlle
             if($response->access_token && $response->application_key) {
                 $apiModel->saveAccessToken($response->access_token);
                 $apiModel->saveAppKey($response->application_key);
+                Mage::app()->getCacheInstance()->cleanType('config');
                 Mage::getSingleton('adminhtml/session')->addSuccess('Registration success.');
             }
             elseif($response->magentoMessage){
@@ -105,6 +106,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_NewControlle
                 $helper = Mage::helper('strakertranslations_easytranslationplatform');
 
                 if ($helper->saveStoreSetup($data['store'], $data['source'], $data['from'], $data['to']) !== false ){
+                    Mage::app()->getCacheInstance()->cleanType('config');
                     $this->_redirect('*/*/', array('store' => $data['store']));
                     return;
                 }
@@ -134,6 +136,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_NewControlle
             foreach (Mage::app()->getStores() as $store) {
                 $helper->saveStoreSetup($store->getId(), '', '', '');
             }
+            Mage::app()->getCacheInstance()->cleanType('config');
             $session->addSuccess('Straker Settings has been cleared.');
 
         } catch (Exception $e) {

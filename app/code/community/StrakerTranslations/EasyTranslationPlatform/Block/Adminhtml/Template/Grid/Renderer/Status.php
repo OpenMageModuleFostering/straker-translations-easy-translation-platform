@@ -6,17 +6,12 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_
         if (get_class($row) == get_class(Mage::getModel('strakertranslations_easytranslationplatform/job') )) {
             //if status is QUEUED
             if ($row->getStatusName() == 'QUEUED') {
-                $quotes = json_decode($row->getQuote(), true);
+                $quote = $row->getQuote();
                 $html = $this->__('Waiting for Quote');
-                if (!empty($quotes) && $row->getStatusId() == 2) {
-                    foreach ($quotes as $quote) {
-                        if ($quote['quote']) {
-                            $html = '<button onclick="viewStrakerQuote('.$row->getId().',\'' . $row->getJobKey() . '\')" style="margin: 5px;" title="View Quote" type="button" style="">'.$this->__('View Quote').'</button>';
-                            break;
-                        }
+                if ('READY' === $quote && $row->getStatusId() == 2) {
+                        $html = '<button onclick="viewStrakerQuote('.$row->getId().',\'' . $row->getJobKey() . '\')" style="margin: 5px;" title="View Quote" type="button" style="">'.$this->__('View Quote').'</button>';
                     }
                 }
-            }
             //else if status is IN_PROGRESS
             elseif ($row->getStatusName() == 'IN_PROGRESS') {
                 $html = $this->__('In Progress');

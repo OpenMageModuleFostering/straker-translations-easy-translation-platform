@@ -4,7 +4,7 @@
  * User: WlliamZhao
  * Date: 30/09/15
  * Time: 4:37 PM
- */ 
+ */
 class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Model_Abstract
 {
     protected $_attributes = array();
@@ -19,11 +19,11 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
     protected function addProductAttributes($productAttributeIds){
 
         foreach ($productAttributeIds as $productAttributeId) {
-           $this->_attributes[] =
+            $this->_attributes[] =
                 Mage::getModel('strakertranslations_easytranslationplatform/product_attributes')
-                ->setJobId($this->getId())
-                ->setAttributeId((int) $productAttributeId)
-                ->save();
+                    ->setJobId($this->getId())
+                    ->setAttributeId((int) $productAttributeId)
+                    ->save();
         }
         return $this;
     }
@@ -31,7 +31,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
     protected function addProductIds($productIds){
 
-        $writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $writeConnection = $this->getWriteAdapter();
 
         $query = 'INSERT INTO `'.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_product').'`  (`product_id`, `job_id`) VALUES ';
         $queryVals = array();
@@ -48,7 +48,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
     protected function addProductTranslateOriginal($productAttributeId, $productCollection){
 
 
-        $writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $writeConnection = $this->getWriteAdapter();
 
         $query = 'INSERT INTO `'.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/product_translate').'`  (`job_id`, `product_id`, `attribute_id`, `original`) VALUES ';
         $queryVals = array();
@@ -66,10 +66,10 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
         foreach ($categoryAttributeIds as $categoryAttributeId) {
             $this->_attributes[] =
-              Mage::getModel('strakertranslations_easytranslationplatform/category_attributes')
-                ->setJobId($this->getId())
-                ->setAttributeId((int) $categoryAttributeId)
-                ->save();
+                Mage::getModel('strakertranslations_easytranslationplatform/category_attributes')
+                    ->setJobId($this->getId())
+                    ->setAttributeId((int) $categoryAttributeId)
+                    ->save();
         }
         return $this;
     }
@@ -77,7 +77,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
     protected function addCategoryIds($categoryIds){
 
-        $writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $writeConnection = $this->getWriteAdapter();
 
         $query = 'INSERT INTO `'.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_category').'`  (`category_id`, `job_id`) VALUES ';
         $queryVals = array();
@@ -94,7 +94,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
     protected function addCategoryTranslateOriginal($categoryAttributeId, $categoryCollection){
 
 
-        $writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $writeConnection = $this->getWriteAdapter();
 
         $query = 'INSERT INTO `'.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/category_translate').'`  (`job_id`, `category_id`, `attribute_id`, `original`) VALUES ';
         $queryVals = array();
@@ -109,22 +109,22 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
     }
 
     public function array_to_xml( $data, &$xml_data ) {
-    foreach( $data as $key => $value ) {
-        if( is_array($value) ) {
-            if( is_numeric($key) ){
-                $key = 'item'.$key; //dealing with <0/>..<n/> issues
+        foreach( $data as $key => $value ) {
+            if( is_array($value) ) {
+                if( is_numeric($key) ){
+                    $key = 'item'.$key; //dealing with <0/>..<n/> issues
+                }
+                $subnode = $xml_data->addChild($key);
+                $this->array_to_xml($value, $subnode);
+            } else {
+                $xml_data->addChild("$key",htmlspecialchars("$value"));
             }
-            $subnode = $xml_data->addChild($key);
-            $this->array_to_xml($value, $subnode);
-        } else {
-            $xml_data->addChild("$key",htmlspecialchars("$value"));
         }
-    }
     }
 
     protected function addAttributeTranslateOriginal($attributeData){
 
-        $writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $writeConnection = $this->getWriteAdapter();
 
         $query = 'INSERT INTO `'.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/straker_attribute_translate').'`  (`job_id`, `attribute_id`, `original`) VALUES ';
         $queryVals = array();
@@ -138,9 +138,9 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
             if ($translate['option'] ){
                 $attributeOptioinCollection = Mage::getModel('eav/entity_attribute_option')
-                  ->getCollection()
-                  ->setStoreFilter($this->getSourceStore())
-                  ->setAttributeFilter($attributeId);
+                    ->getCollection()
+                    ->setStoreFilter($this->getSourceStore())
+                    ->setAttributeFilter($attributeId);
 
                 foreach ($attributeOptioinCollection as $attributeOptioin) {
                     $original['option']['id_'.$attributeOptioin->getoptionId()] = $attributeOptioin->getValue();
@@ -172,7 +172,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
     protected function addAttributeIds($attributeData){
 
 
-        $writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $writeConnection = $this->getWriteAdapter();
 
         $query = 'INSERT INTO `'.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_attribute').'`  (`attribute_id`, `translate_lable`, `translate_option`, `job_id` ) VALUES ';
         $queryVals = array();
@@ -225,7 +225,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
             $productCollection->addFieldToFilter('entity_id', array('in'=> $_productIds));
 
             foreach ( $productAttributeIds as $productAttributeId){
-                    $this->addProductTranslateOriginal($productAttributeId, $productCollection);
+                $this->addProductTranslateOriginal($productAttributeId, $productCollection);
             }
         }
         return $this;
@@ -294,7 +294,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
         $_xml = '<?xml version="1.0" encoding="utf-8"?><root>';
 
-        $productTranslateCollection = Mage::getModel('strakertranslations_easytranslationplatform/product_translate')->getCollection();
+        $productTranslateCollection = Mage::getModel('strakertranslations_easytranslationplatform/product_translate')->getCollection($this->getWriteAdapter());
         $productTranslateCollection->addFieldToFilter('job_id',$this->getId());
 
         $attributeFrontLabel = array();
@@ -302,7 +302,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         foreach ($productTranslateCollection as $productTranslate ){
             if (!isset($attributeFrontLabel[$productTranslate->getAttributeId()])){
                 $attributeFrontLabel[$productTranslate->getAttributeId()] =
-                  Mage::getModel('eav/entity_attribute')->load($productTranslate->getAttributeId())->getFrontendLabel();
+                    Mage::getModel('eav/entity_attribute')->load($productTranslate->getAttributeId())->getFrontendLabel();
             }
 
             $_xml .= '<data name="' .$this->getTypeId(). '_' . $this->getStoreId().'_'. $productTranslate->getAttributeId().'_'. $productTranslate->getProductId().'" ' ;
@@ -331,7 +331,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         foreach ($categoryTranslateCollection as $categoryTranslate ){
             if (!isset($attributeFrontLabel[$categoryTranslate->getAttributeId()])){
                 $attributeFrontLabel[$categoryTranslate->getAttributeId()] =
-                  Mage::getModel('eav/entity_attribute')->load($categoryTranslate->getAttributeId())->getFrontendLabel();
+                    Mage::getModel('eav/entity_attribute')->load($categoryTranslate->getAttributeId())->getFrontendLabel();
             }
 
             $_xml .= '<data name="' .$this->getTypeId(). '_' . $this->getStoreId().'_'. $categoryTranslate->getAttributeId().'_'. $categoryTranslate->getCategoryId().'" ' ;
@@ -431,8 +431,8 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         //product
         $this->setTypeId(1);
         $this->addProducts($productAttributeIds, $productIds)
-        ->_createProductTranslateFile()
-        ->_summitJob();
+            ->_createProductTranslateFile()
+            ->_summitJob();
         return $this;
     }
 
@@ -441,8 +441,8 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         //category
         $this->setTypeId(3);
         $this->addCategories($categoryAttributeIds, $categoryIds)
-          ->_createCategoryTranslateFile()
-          ->_summitJob();
+            ->_createCategoryTranslateFile()
+            ->_summitJob();
         return $this;
     }
 
@@ -451,8 +451,8 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         //category
         $this->setTypeId(4);
         $this->addAttributes($attributeData)
-          ->_createAttributeTranslateFile()
-          ->_summitJob();
+            ->_createAttributeTranslateFile()
+            ->_summitJob();
         return $this;
     }
 
@@ -462,12 +462,18 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
             $request = array();
             $request['job_key'] = $this->getJobKey();
             $api = $this->_getApi();
-            $response = $api->getQuote($request);
-            $quote = json_encode($response->quote);
+            $response = $api->getTranslation($request);
 
-            if($quote && $quote != $this->getQuote()){
-                $this->setQuote($quote)->save();
-                return true;
+            if ($response->job) {
+                foreach ($response->job as $job){
+                    if ($job->token == $this->getId()) {
+                        $quote = $job->quotation;
+                        if ($quote && $quote != $this->getQuote()) {
+                            $this->setQuote($quote)->save();
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;
@@ -475,7 +481,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
     }
 
     public function updateTranslation(){
-
+        $updateFlag = false;
         if ($this->getJobKey()){
             $request = array();
             $request['job_key'] = $this->getJobKey();
@@ -489,14 +495,22 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
                         if ($jobStatusId && $job->status <> $this->getStatusName()) {
                             $this->setStatusId($jobStatusId)->save();
+                            $updateFlag = true;
                         }
 
                         if ($job->tj_number && $job->tj_number <> $this->getTjNumber()) {
                             $this->setTjNumber($job->tj_number)->save();
+                            $updateFlag = true;
                         }
 
                         if ($job->workflow && $job->workflow <> $this->getWorkFlow()) {
                             $this->setWorkFlow($job->workflow)->save();
+                            $updateFlag = true;
+                        }
+
+                        if ($job->quotation && $job->quotation <> $this->getQuote()) {
+                            $this->setQuote($job->quotation)->save();
+                            $updateFlag = true;
                         }
                     }
 
@@ -504,8 +518,8 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
                         if ($file->download_url && !$this->getDownloadUrl()) {
                             $this->setDownloadUrl($file->download_url)->save();
-
                             $this->_importTranslation();
+                            $updateFlag = true;
                         }
                     }
                 }
@@ -518,8 +532,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
             }
 
         }
-        return false;
-
+        return $updateFlag;
     }
 
     protected function _getApi(){
@@ -570,7 +583,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
                 $this->array_to_xml($_translationValue,$xml);
                 $value = (string) $xml->asXML();
             }
-            
+
 
             $_entityTranslation = Mage::getModel('strakertranslations_easytranslationplatform/'.$this->_getType().'_translate')->load($content_id);
             $_entityTranslation->setTranslate($value);
@@ -611,7 +624,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         }
 
         $updatedIds = array();
-        $writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $writeConnection = $this->getWriteAdapter();
 
         foreach ($collection as $translation) {
             $translation->setStoreId($this->getStoreId())->importTranslation();
@@ -676,5 +689,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
     }
 
-
+    protected function getWriteAdapter(){
+        return Mage::getSingleton('core/resource')->getConnection('core_write');
+    }
 }

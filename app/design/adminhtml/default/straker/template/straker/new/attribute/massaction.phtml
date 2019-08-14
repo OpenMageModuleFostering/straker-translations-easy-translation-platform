@@ -194,7 +194,12 @@
 
             $$('.massaction-checkbox').each(function(element) {
                 element.observe('click', function(e){
-                    if( typeof(e.target.up('tr').down('.checkbox-option')) !== 'undefined' && !e.target.up('tr').down('.checkbox-option').checked){
+                    if( typeof(e.target.up('tr').down('.checkbox-option')) !== 'undefined' &&
+                        (
+                            (e.target.checked && !e.target.up('tr').down('.checkbox-option').checked)||
+                            (!e.target.checked && e.target.up('tr').down('.checkbox-option').checked)
+                        )
+                    ) {
                         e.target.up('tr').down('.checkbox-option').click();
                     }
                 });
@@ -202,7 +207,7 @@
 
             $$('.checkbox-option').each(function(element) {
                 element.observe('click', function(e){
-                    if(!e.target.up('tr').down('.massaction-checkbox').checked){
+                    if(e.target.checked && !e.target.up('tr').down('.massaction-checkbox').checked){
                         e.target.up('tr').down('.massaction-checkbox').click();
                     }
                 });
