@@ -108,6 +108,29 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         return $this;
     }
 
+    protected function addCmsTranslateOriginal($Column, $cmsDataCollection, $type='page',$jobCmsIds) {
+
+        $writeConnection = $this->getWriteAdapter();
+
+        $query = 'INSERT INTO `'.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/cms_'.$type.'_translate').'`  (`job_id`, `cms_'.$type.'_id`, `column_name`, `original` , `job_cms_id`) VALUES ';
+        $queryVals = array();
+        foreach ($cmsDataCollection as $cmsData) {
+
+            foreach ($jobCmsIds as $k => $v){
+                if ($cmsData[$type.'_id'] == $v){
+                    $jobCmsId = $k;
+                    break;
+                }
+            }
+
+            $queryVals[] = '(' . $this->getId() . ', ' . $cmsData[$type.'_id'] . ',  \'' . addslashes($Column). '\', \'' . addslashes($cmsData[$Column]).'\', ' . $jobCmsId . ')';
+        }
+
+        $writeConnection->query( $query . implode(',', $queryVals));
+
+        return $this;
+    }
+
     public function array_to_xml( $data, &$xml_data ) {
         foreach( $data as $key => $value ) {
             if( is_array($value) ) {
@@ -290,6 +313,92 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         return $this;
     }
 
+
+    public function addCmsEntities($ids, $Columns = array(), $type = 'page'){
+
+        if (!$this->getId()){
+            if (!$this->getStoreId()){
+                Mage::throwException('Error: Missing Store Id');
+            }
+            $this->setSourceStore(Mage::getStoreConfig('straker/general/source',$this->getStoreId()));
+            $this->save();
+        }
+
+        foreach ($Columns as $Column) {
+            $this->_attributes[] =
+              Mage::getModel('strakertranslations_easytranslationplatform/cms_'.$type.'_attributes')
+                ->setJobId($this->getId())
+                ->setColumnName($Column)
+                ->save();
+        }
+
+        $writeConnection = $this->getWriteAdapter();
+
+        $searchQuery = 'SELECT * FROM ' .Mage::getSingleton('core/resource')->getTableName('cms/'.$type)
+          .' WHERE '.$type.'_id IN ('.implode(',',$ids).')';
+
+        $cmsDataCollection = $writeConnection->fetchAll($searchQuery);
+
+        $query = 'INSERT INTO `'
+          .Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_cms'.$type)
+          .'`  (`'.$type.'_id`,  `job_id` , `origin`) VALUES ';
+
+        $queryVals = array();
+
+        foreach ($cmsDataCollection as $cmsData) {
+            $id = $cmsData[$type.'_id'];
+
+            unset($cmsData[$type.'_id']);
+
+
+            $queryVals[] = "(" . (int) $id . ", ". $this->getId() . ", '". addslashes(json_encode($cmsData)) . "')";
+        }
+
+        $writeConnection->query( $query . implode(',', $queryVals));
+
+        $query =   'SELECT id, '.$type.'_id FROM '.Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_cms'.$type)
+        .' WHERE job_id = '. $this->getId();
+
+        $jobCmsIds =  $writeConnection->fetchPairs($query);
+
+        foreach ($Columns as $Column) {
+            $this->addCmsTranslateOriginal($Column, $cmsDataCollection, $type,$jobCmsIds);
+        }
+
+
+        $this->_createCMSTranslateFile($type);
+
+
+            return $this;
+
+
+
+    }
+
+    protected function _createCMSTranslateFile($type) {
+
+        $_xml = '<?xml version="1.0" encoding="utf-8"?><root>';
+
+        $cmsTranslateCollection = Mage::getModel('strakertranslations_easytranslationplatform/cms_'.$type.'_translate')->getCollection($this->getWriteAdapter());
+        $cmsTranslateCollection->addFieldToFilter('job_id',$this->getId());
+
+        foreach ($cmsTranslateCollection as $cmsTranslate ){
+
+            $_xml .= '<data name="cms_' .$type. '_' .$cmsTranslate->getCmsId().'_'.$cmsTranslate->getColumnName().'_'.'" ' ;
+            $_xml .= 'content_context="'.$cmsTranslate->getColumnName().'" ';
+            $_xml .= 'content_id="'. $cmsTranslate->getId() .'">';
+            $_xml .= '<value><![CDATA['.$cmsTranslate->getOriginal().']]></value></data>';
+        }
+        $_xml .='</root>';
+
+        file_put_contents(MAGENTO_ROOT.$this->_translateFilePath.'job'.$this->getId().'.xml',$_xml);
+        $this->setSourceFile('job'.$this->getId().'.xml')->save() ;
+
+        return $this;
+
+
+    }
+
     protected function _createProductTranslateFile() {
 
         $_xml = '<?xml version="1.0" encoding="utf-8"?><root>';
@@ -456,6 +565,22 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         return $this;
     }
 
+    public function submitCmsPage($cmsIds,$columns = array('title','content')){
+
+        $this->setTypeId(5);
+        $this->addCmsEntities($cmsIds,$columns,'page')
+          ->_summitJob();
+        return $this;
+    }
+
+    public function submitCmsblock($cmsIds,$columns = array('title','content')){
+
+        $this->setTypeId(6);
+        $this->addCmsEntities($cmsIds,$columns,'block')
+          ->_summitJob();
+        return $this;
+    }
+
     public function updateQuote(){
 
         if ($this->getJobKey()){
@@ -596,7 +721,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
     }
 
     protected function _getType(){
-        return strtolower($this->getTypeName());
+        return str_replace(' ', '_', strtolower($this->getTypeName()));
     }
 
     public function updatePayment(){
@@ -626,19 +751,68 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         $updatedIds = array();
         $writeConnection = $this->getWriteAdapter();
 
+        if (in_array($this->_getType() , array('cms_block','cms_page'))){
+            $this->createNewCms($entityIds);
+        }
+
         foreach ($collection as $translation) {
             $translation->setStoreId($this->getStoreId())->importTranslation();
 
-            $entityId= call_user_func(array($translation, 'get'.$this->getTypeName().'Id'));
+            $entityId= call_user_func(array($translation, 'getData'),strtolower(str_replace(' ','_',$this->getTypeName().'_id')));
 
             if (empty($updatedIds[$entityId])){
                 $updatedIds[$entityId] = true;
                 $prefix = Mage::getConfig()->getTablePrefix()->__toString();
-                $writeConnection->update($prefix.'straker_job_'.$this->_getType() ,array('version' => 1), $this->_getType()."_id = {$entityId} and job_id ={$this->getId()}"  );
+                if (in_array($this->_getType() , array('cms_block','cms_page'))){
+                    $cmstableName = str_replace('_','',$this->_getType());
+                    $cmsColumnName = str_replace('cms_', '', $this->_getType());
+                    $entityId = $translation->getData($this->_getType().'_id');
+                    $writeConnection->update($prefix.'straker_job_'.$cmstableName ,array('version' => 1), $cmsColumnName."_id = {$entityId} and job_id ={$this->getId()}"  );
+                }else{
+                    $writeConnection->update($prefix.'straker_job_'.$this->_getType() ,array('version' => 1), $this->_getType()."_id = {$entityId} and job_id ={$this->getId()}"  );
+                }
             }
         }
 
         return true;
+    }
+
+    protected function createNewCms($entityIds){
+
+
+        $cmsType = str_replace('cms_', '', $this->_getType());
+
+        $cmsModelName = str_replace('_', '/', $this->_getType());
+
+
+        $collection = Mage::getModel('strakertranslations_easytranslationplatform/job_'.$this->_getType())->getCollection();
+
+        $collection->addFieldToFilter('job_id',$this->getId());
+
+        if ($entityIds) {
+            $collection->addFieldToFilter($cmsType.'_id', array('in' => $entityIds));
+        }
+
+        foreach ($collection as $jobCms) {
+
+            if (!$jobCms->getNewEntityId()) {
+
+                $cmsModel = Mage::getModel($cmsModelName);
+
+                $cmsData = json_decode($jobCms->getOrigin());
+
+                foreach ($cmsData as $k => $v){
+                    $cmsModel->setData($k,$v);
+                }
+
+                $cmsModel->setStores(array())->save();
+
+                $jobCms->setNewEntityId($cmsModel->getId()) ->save();
+
+            }
+
+        }
+
     }
 
     public function isPublished()

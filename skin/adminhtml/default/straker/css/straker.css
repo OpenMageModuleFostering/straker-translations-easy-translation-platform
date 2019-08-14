@@ -465,3 +465,21 @@ ol.wizard {
 #selectstore-form .validation-advice {
   margin-left: 25%;
 }
+#straker-cms-title-message {
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 20px;
+}
+#straker-cms-title-message #straker-icon {
+  color: #31BBEA;
+}
+#straker-cms-title-message #straker-icon::before {
+  content: ' ';
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: transparent url(../images/straker-translations-logo.png);
+  background-size: 100% 100%;
+  vertical-align: top;
+  margin-left: 5px;
+}

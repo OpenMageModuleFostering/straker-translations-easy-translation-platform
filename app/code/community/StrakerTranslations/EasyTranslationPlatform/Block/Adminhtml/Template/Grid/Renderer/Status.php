@@ -4,6 +4,8 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_
 {
     public function render(Varien_Object $row){
         if (get_class($row) == get_class(Mage::getModel('strakertranslations_easytranslationplatform/job') )) {
+            $html = '';
+
             //if status is QUEUED
             if ($row->getStatusName() == 'QUEUED') {
                 $quote = $row->getQuote();

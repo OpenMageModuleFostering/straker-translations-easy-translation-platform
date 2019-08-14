@@ -46,16 +46,6 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_NewControlle
                 ->_addContent(Mage::getSingleton('core/layout')->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_type','strakertranslations_easytranslationplatform_new_type',array('setup_store_id' => $params['store'])))
                 ->renderLayout();
         }
-//        elseif (empty($params['attr'])) {
-//            return $this->_initAction()
-//                ->_addContent(Mage::getSingleton('core/layout')->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_attribute','strakertranslations_easytranslationplatform_new_attribute',array('setup_store_id' => $params['store'])))
-//                ->renderLayout();
-//        }
-//        else{
-//            return $this->_initAction()
-//                ->_addContent(Mage::getSingleton('core/layout')->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_products','strakertranslations_easytranslationplatform_new_products',array('setup_store_id' => $params['store'], 'attr' => $params['attr'])))
-//                ->renderLayout();
-//        }
     }
 
     public function registerAction(){
