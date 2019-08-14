@@ -167,11 +167,12 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Attribute_
             return $this;
         }
 
-        if ( in_array($value, ['select','multiselect'] ) ){
-            $collection->getSelect()->where('frontend_input in (?)', ['select','multiselect']);
+        if ($value == 'select' ){
+            $collection->getSelect()->where('frontend_input=?', 'select');
         } else {
-            $collection->getSelect()->where('frontend_input not in (?)', ['select','multiselect']);
+            $collection->getSelect()->where('frontend_input<>?', 'select');
         }
+
         return $this;
     }
 
@@ -183,7 +184,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Attribute_
 
         $this->getMassactionBlock()->addItem('add', array(
              'label'=> Mage::helper('catalog')->__('Add to Confirm Page'),
-             'url'  => $this->getUrl('*/*/addToConfirm'),
+             'url'  => $this->getUrl('*/*/addtoconfirm'),
              'selected' => 1
         ));
         $this->getMassactionBlock()->setTemplate('straker/new/attribute/massaction.phtml');
@@ -212,7 +213,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Attribute_
         $AttributeIdsWithOption->reset(Zend_Db_Select::LIMIT_OFFSET);
         $AttributeIdsWithOption->reset(Zend_Db_Select::COLUMNS);
         $AttributeIdsWithOption->reset(Zend_Db_Select::COLUMNS);
-        $AttributeIdsWithOption->where('frontend_input in (?)',['select','multiselect']);
+        $AttributeIdsWithOption->where('frontend_input=?','select');
         $AttributeIdsWithOption->columns('attribute_id', 'main_table');
         return  Mage::getSingleton('core/resource')->getConnection('core_read')->fetchCol($AttributeIdsWithOption);
     }

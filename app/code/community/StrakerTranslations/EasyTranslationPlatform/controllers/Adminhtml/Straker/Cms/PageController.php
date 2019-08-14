@@ -74,7 +74,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_Cms_PageCont
         }
     }
 
-    public function addToConfirmAction(){
+    public function addtoconfirmAction(){
         $data = $this->_getParamArray();
         if(!empty($data['attr']) && !empty($data['store']) && !empty($data['cms_page'])){
             Mage::getSingleton('adminhtml/session')
@@ -94,7 +94,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_Cms_PageCont
         }
     }
 
-    public function submitJobAction(){
+    public function submitjobAction(){
         $data = $this->getRequest()->getParams();
         if($data['attr'] && $data['store'] && $data['cms_page']){
             /** @var  $jobModel StrakerTranslations_EasyTranslationPlatform_Model_Job */
@@ -134,7 +134,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_Cms_PageCont
         }
     }
 
-    public function publishAllAction(){
+    public function copyAllAction(){
         /** @var  $job StrakerTranslations_EasyTranslationPlatform_Model_Job */
         $job = Mage::getModel('strakertranslations_easytranslationplatform/job')->load($this->getRequest()->getParam('job_id'));
 
@@ -156,9 +156,8 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_Cms_PageCont
 
     }
 
-    public function publishAction(){
+    public function applyTranslationAction(){
         $jobId = $this->getRequest()->getParam('job_id');
-        /** @var StrakerTranslations_EasyTranslationPlatform_Model_Job $job */
         $job = Mage::getModel('strakertranslations_easytranslationplatform/job')->load($jobId);
 
         if (!$job->getId()){
@@ -242,8 +241,8 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_Cms_PageCont
     }
 
     public function removeFromCartAction(){
-        $entityId = $this->getRequest()->getParam('page_id');
-        if(!empty($entityId)){
+        $entityId = 0;
+        if(!empty($this->getRequest()->getParam('page_id'))){
             $entityId = $this->getRequest()->getParam('page_id');
         }
         $pageIds = Mage::getSingleton('adminhtml/session')->getData('straker_new_cms_page');
@@ -254,7 +253,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_Cms_PageCont
             unset($pageIds[$key]);
         }
         Mage::getSingleton('adminhtml/session')->setData('straker_new_cms_page', $pageIds);
-        $this->_redirect('*/*/addToConfirm');
+        $this->_redirect('*/*/addtoconfirm');
     }
 
     private function _getParamArray(){

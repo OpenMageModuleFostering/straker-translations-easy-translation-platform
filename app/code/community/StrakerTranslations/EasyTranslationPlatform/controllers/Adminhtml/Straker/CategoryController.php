@@ -78,7 +78,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_CategoryCont
         }
     }
 
-    public function submitJobAction()
+    public function submitjobAction()
     {
         $data = $this->getRequest()->getParams();
         if($data['attr'] && $data['store'] && $data['category']){
@@ -159,7 +159,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_CategoryCont
 //        }
     }
 
-    public function publishAllAction(){
+    public function copyAllAction(){
         $job = Mage::getModel('strakertranslations_easytranslationplatform/job')->load($this->getRequest()->getParam('job_id'));
 
         if (!$job->getId()){
@@ -180,7 +180,7 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_CategoryCont
 
     }
 
-    public function publishAction(){
+    public function applyTranslationAction(){
         $jobId = $this->getRequest()->getParam('job_id');
         $job = Mage::getModel('strakertranslations_easytranslationplatform/job')->load($jobId);
 
@@ -262,8 +262,8 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_CategoryCont
     }
 
     public function removeFromCartAction(){
-        $entityId = $this->getRequest()->getParam('entity_id');
-        if(!empty($entityId)){
+        $entityId = 0;
+        if(!empty($this->getRequest()->getParam('entity_id'))){
             $entityId = $this->getRequest()->getParam('entity_id');
         }
         $categoryIds = Mage::getSingleton('adminhtml/session')->getData('straker_new_category');

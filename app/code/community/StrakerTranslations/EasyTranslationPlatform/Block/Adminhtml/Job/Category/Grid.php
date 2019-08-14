@@ -113,6 +113,13 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Category_G
             ));
         }
 
+        $this->addColumn('view_frontend', array(
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('View Frontend'),
+            'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_Frontend',
+            'align' => 'center',
+            'index' => false,
+            'filter' => false,
+        ));
 
         $this->addColumn('view_backend', array(
             'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('View Backend'),
@@ -153,7 +160,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Category_G
 
             $this->getMassactionBlock()->addItem('add', array(
                 'label' => Mage::helper('catalog')->__('Publish Translation'),
-                'url' => $this->getUrl('*/*/publish'),
+                'url' => $this->getUrl('*/*/applyTranslation'),
                 'selected' => 1
             ));
             $this->getMassactionBlock()->setTemplate('straker/job/category/massaction.phtml');

@@ -13,48 +13,40 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Cms_Page_Translate exten
         $this->_init('strakertranslations_easytranslationplatform/cms_page_translate');
     }
 
-//    public function importTranslation(){
-//        $success = true;
-//        $newEntityId =Mage::getModel('strakertranslations_easytranslationplatform/job_cms_page')->load($this->getJobCmsId())
-//          ->getNewEntityId();
+    public function importTranslation(){
+
+        $newEntityId =Mage::getModel('strakertranslations_easytranslationplatform/job_cms_page')->load($this->getJobCmsId())
+          ->getNewEntityId();
+
+
+//        if ($this->getTranslate()){
 //
-////        if ($this->getTranslate()){
-////            $writeConnection = $this->_getConnection();
-////            $query = 'UPDATE `'.Mage::getSingleton('core/resource')->getTableName('cms/page')
-////              . '` SET '.$this->getColumnName() .' = \''.addslashes($this->getTranslate()).' \' WHERE page_id = '.$newEntityId;
-////            $writeConnection->query($query);
-////        }
-////        $this->setIsImported(1)->save();
+//            $writeConnection = $this->_getConnection();
 //
-//        $translation = $this->getTranslate();
-//        if( !empty($translation) ){
-//            $model = Mage::getModel('cms/page')->load($newEntityId);
-//            if($model->getId()){
-//                $model->setData($this->getColumnName(), $translation );
-//                $model->setData('stores', $this->getStoreId());
-//                // try to save it
-//                try {
-//                    // save the data
-//                    $model->save();
+//            $query = 'UPDATE `'.Mage::getSingleton('core/resource')->getTableName('cms/page')
+//              . '` SET '.$this->getColumnName() .' = \''.addslashes($this->getTranslate()).' \' WHERE page_id = '.$newEntityId;
 //
-//                    // display success message
-//                    Mage::getSingleton('adminhtml/session')->addSuccess(
-//                        Mage::helper('cms')->__('The page has been saved.'));
-//                    $this->setIsImported(1)->save();
-//                }catch (Exception $e) {
-//                    $success = false;
-//                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage()
-//                        . ' Page ID: ' . $this->getJobCmsId()
-//                        . ' Attribute: ' . $this->getColumnName());
-//                }
-//            }
+//
+//            $writeConnection->query($query);
+//
+//
 //        }
-//        return $success;
-//    }
+//
+//        $this->setIsImported(1)->save();
+        $translation = $this->getTranslate();
+        if( !empty($translation) ){
+            $model = Mage::getModel('cms/page')->load($newEntityId);
+            if($model->getId()){
+                $model->setData($this->getColumnName(), $translation );
+                $model->save();
+                $model->unsetData();
+            }
+        }
+        $this->setIsImported(1)->save();
+    }
 //
 //    private function _getConnection() {
 //        return Mage::getSingleton('core/resource')->getConnection('core_write');
 //    }
-
 
 }

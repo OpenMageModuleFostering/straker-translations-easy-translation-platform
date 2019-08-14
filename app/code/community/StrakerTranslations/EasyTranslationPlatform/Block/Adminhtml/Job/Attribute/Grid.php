@@ -51,94 +51,87 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Attribute_
 
     protected function _prepareColumns() {
         $this->addColumn('id', array(
-            'header'        => Mage::helper('strakertranslations_easytranslationplatform')->__('ID'),
-            'type'          => 'number',
-            'align'         => 'right',
-            'width'         => '50px',
-            'index'         => 'id',
-            'filter_index'  => 'main_table.id',
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('ID'),
+            'type' => 'number',
+            'align' => 'right',
+            'width' => '50px',
+            'index' => 'id',
+            'filter_index' => 'main_table.id'
         ));
 
         $this->addColumn('attribute_id', array(
-            'header'        => Mage::helper('strakertranslations_easytranslationplatform')->__('Attribute ID'),
-            'type'          => 'number',
-            'align'         => 'left',
-            'index'         => 'attribute_id',
-            'filter_index'  => 'main_table.attribute_id',
-            'width'         => '50px'
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Attribute ID'),
+            'type' => 'number',
+            'align' => 'left',
+            'index' => 'attribute_id',
+            'filter_index' => 'main_table.attribute_id'
         ));
 
         $this->addColumn('attribute_code', array(
-            'header'        => Mage::helper('strakertranslations_easytranslationplatform')->__('Attribute Code'),
-            'align'         => 'left',
-            'index'         => 'attribute_code',
-            'width'         => '50px'
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Attribute Code'),
+            'align' => 'left',
+            'index' => 'attribute_code',
         ));
 
 
         $this->addColumn('label_original', array(
-            'header'        => Mage::helper('strakertranslations_easytranslationplatform')->__('Label - Source'),
-            'renderer'      => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeOriginalLabel',
-            'align'         => 'center',
-            'index'         => false,
-            'sortable'      => false,
-            'filter'        => false,
-            'width'         => '15%'
-        ));
-
-        $this->addColumn('label_translate', array(
-            'header'        => Mage::helper('strakertranslations_easytranslationplatform')->__('Label - Target'),
-            'renderer'      => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeTranslateLabel',
-            'align'         => 'center',
-            'index'         => false,
-            'sortable'      => false,
-            'filter'        => false,
-            'width'         => '15%'
-
+            'header'=>Mage::helper('strakertranslations_easytranslationplatform')->__('Label - Source'),
+            'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeOriginalLabel',
+            'align' => 'center',
+            'index' => false,
+            'sortable'=> false,
+            'filter'    => false,
         ));
 
         $this->addColumn('option_original', array(
-            'header'        => Mage::helper('strakertranslations_easytranslationplatform')->__('Option - Source'),
-            'renderer'      => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeOriginalOption',
-            'align'         => 'center',
-            'index'         => false,
-            'sortable'      => false,
-            'filter'        => false,
-            'width'         => '20%'
+            'header'=>Mage::helper('strakertranslations_easytranslationplatform')->__('Option - Source'),
+            'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeOriginalOption',
+            'align' => 'center',
+            'index' => false,
+            'sortable'=> false,
+            'filter'    => false,
+        ));
+
+        $this->addColumn('label_translate', array(
+            'header'=>Mage::helper('strakertranslations_easytranslationplatform')->__('Label - Target'),
+            'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeTranslateLabel',
+            'align' => 'center',
+            'index' => false,
+            'sortable'=> false,
+            'filter'    => false,
         ));
 
         $this->addColumn('option_translate', array(
-            'header'        => Mage::helper('strakertranslations_easytranslationplatform')->__('Option - Target'),
-            'renderer'      => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeTranslateOption',
-            'align'         => 'center',
-            'index'         => false,
-            'sortable'      => false,
-            'filter'        => false,
-            'width'         => '20%'
+            'header'=>Mage::helper('strakertranslations_easytranslationplatform')->__('Option - Target'),
+            'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_AttributeTranslateOption',
+            'align' => 'center',
+            'index' => false,
+            'sortable'=> false,
+            'filter'    => false,
         ));
 
         if ($this->getStatusId() == '4' || $this->getStatusId() == '5'){
             $this->addColumn('version', array(
-                'header'                    => Mage::helper('strakertranslations_easytranslationplatform')->__('Published'),
-                'renderer'                  => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_Version',
-                'align'                     => 'center',
-                'index'                     => 'version',
+                'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Published'),
+                'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_Version',
+                'align' => 'center',
+                'index' => 'version',
                 'filter_condition_callback' => [$this, '_filterVersion'],
-                'options'                   => [
+                'options' => [
                     '0' => Mage::helper('strakertranslations_easytranslationplatform')->__('Published'),
                     '1' => Mage::helper('strakertranslations_easytranslationplatform')->__('Not Published')
                 ],
-                'width' => '50px'
+                'width' => '20%'
             ));
         }
 
-        $this->addColumn('view_backend', array(
-            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('View Backend'),
-            'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_Backend',
-            'align' => 'center',
-            'index' => false,
-            'filter'    => false,
-        ));
+//        $this->addColumn('view_backend', array(
+//            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('View Backend'),
+//            'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_Backend',
+//            'align' => 'center',
+//            'index' => false,
+//            'filter'    => false,
+//        ));
 
         return parent::_prepareColumns();
     }
@@ -169,7 +162,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Attribute_
 
             $this->getMassactionBlock()->addItem('add', array(
                 'label' => Mage::helper('catalog')->__('Publish Translation'),
-                'url' => $this->getUrl('*/*/publish'),
+                'url' => $this->getUrl('*/*/applyTranslation'),
                 'selected' => 1
             ));
 
