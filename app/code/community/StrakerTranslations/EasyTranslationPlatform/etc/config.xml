@@ -2,7 +2,7 @@
 <config>
     <modules>
         <StrakerTranslations_EasyTranslationPlatform>
-            <version>0.3.0</version>
+            <version>1.0.0</version>
         </StrakerTranslations_EasyTranslationPlatform>
     </modules>
     <global>
