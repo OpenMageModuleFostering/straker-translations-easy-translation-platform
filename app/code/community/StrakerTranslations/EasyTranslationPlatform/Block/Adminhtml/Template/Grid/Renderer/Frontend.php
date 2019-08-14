@@ -6,7 +6,10 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_
 
     public function render(Varien_Object $row){
         $html = '';
-        if ($row->getProductId()) {
+        if(!$row->getVersion()){
+            $html .= '<p class="inactive">' . $this->__('View Product in Frontend') . '</p>';
+        }
+        elseif ($row->getProductId()) {
             $product = Mage::getModel('catalog/product')->setStoreId($this->getStoreId($row))->load($row->getProductId());
             if (!$product->isDisabled() && $product->isVisibleInSiteVisibility()) {
                 $html .= '<a target="_blank" href="' . $product->getProductUrl() . '">' . $this->__('View Product in Frontend') . '</a>';

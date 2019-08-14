@@ -46,12 +46,12 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Product_Gr
     }
 
     protected function _prepareColumns() {
-//        $this->addColumn('id', array(
-//            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('ID'),
-//            'align' => 'right',
-//            'width' => '50px',
-//            'index' => 'id',
-//        ));
+        $this->addColumn('id', array(
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('ID'),
+            'align' => 'right',
+            'width' => '50px',
+            'index' => 'id',
+        ));
 
         $this->addColumn('product_id', array(
             'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Product ID'),
@@ -137,7 +137,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Product_Gr
             $this->getMassactionBlock()->setHiddenParams($hiddenParams);
 
 
-            Mage::dispatchEvent('adminhtml_strakertranslation_job_product_grid_prepare_massaction', array('block' => $this));
+//            Mage::dispatchEvent('adminhtml_strakertranslation_job_product_grid_prepare_massaction', array('block' => $this));
             return $this;
         }
     }

@@ -444,6 +444,32 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
         return true;
     }
 
+    public function isPublished()
+    {
+        if ($this->getStatusId() == 5) {
+            return true;
+        } elseif($this->getStatusId() == 4) {
+            return $this->updatePublishedStatus()->getStatus() == 5;
+        }
+        else{
+            return false;
+        }
+    }
+
+    protected  function updatePublishedStatus(){
+        $collection = Mage::getModel('strakertranslations_easytranslationplatform/job_'.$this->_getType())->getCollection()->addFieldToFilter('job_id',$this->getId());
+        $collection->addFieldToFilter('version',
+            array(
+                array('neq' => '1'),
+                array('null' => true)
+            )
+        );
+        if(!$collection->getFirstItem()->getId()){
+            $this->setStatusId(5)->save();
+        }
+        return $this;
+    }
+
     public function submitSupport(array $data){
 
         $res = $this->_getApi()->callSupport($data);

@@ -15,6 +15,10 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_NewControlle
         return $this;
     }
 
+    public function accountAction(){
+        $this->_redirectUrl("http://myaccount.strakertranslations.com/");
+    }
+
     public function indexAction(){
         $params = $this->getRequest()->getParams();
         if (Mage::helper('strakertranslations_easytranslationplatform')->getAppKey() === false || Mage::helper('strakertranslations_easytranslationplatform')->getAccessToken() === false){
@@ -207,5 +211,21 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_NewControlle
         return;
     }
 
+
+    public function resetStoreSettingsAction(){
+        $storeId = $this->getRequest()->getParam('store');
+        $helper = Mage::helper('strakertranslations_easytranslationplatform');
+        $session = Mage::getSingleton('adminhtml/session');
+
+        if($helper->getStoreSetup($storeId)){
+            $helper->saveStoreSetup($storeId, '', '', '');
+            $session->addSuccess($this->__('Language settings has been reset.'));
+        }
+        else{
+            $session->addError($this->__('Store code is not valid.'));
+        }
+        $this->_redirect('adminhtml/system_config/edit/section/straker');
+        return;
+    }
 
 }

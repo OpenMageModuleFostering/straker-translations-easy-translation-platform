@@ -6,7 +6,10 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_
 
     public function render(Varien_Object $row){
         $html = '';
-        if ($row->getProductId()) {
+        if(!$row->getVersion()){
+            $html .= '<p class="inactive">' . $this->__('View Product in Backend') . '</p>';
+        }
+        elseif ($row->getProductId()) {
             $product = Mage::getModel('catalog/product')->load($row->getProductId());
             $url = $this->getUrl('adminhtml/catalog_product/edit', array(
                     'store' => $this->getStoreId($row),

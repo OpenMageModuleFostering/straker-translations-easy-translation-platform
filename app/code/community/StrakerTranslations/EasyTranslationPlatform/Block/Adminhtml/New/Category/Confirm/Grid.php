@@ -33,12 +33,33 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
             $collection->addAttributeToSelect($attr);
         }
 
+        //join straker job product table to get version for each product
+        $collection->getSelect()->joinLeft(
+            'straker_job_category',
+            'straker_job_category.category_id = e.entity_id',
+            'version'
+        );
+
         $this->setCollection($collection);
 
         parent::_prepareCollection();
 //        $this->getCollection()->addWebsiteNamesToResult();
         return $this;
     }
+
+//    protected function _addColumnFilterToCollection($column)
+//    {
+//
+//        if ($column->getId() == 'version') {
+//            $this->getCollection()->joinField('version',
+//                'straker_job_category',
+//                'version',
+//                'category_id=entity_id',
+//                null,
+//                'left');
+//        }
+//
+//    }
 
     protected function _prepareColumns()
     {
@@ -50,6 +71,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
                 'type'  => 'number',
                 'index' => 'entity_id',
                 'filter' => false,
+                'sortable'  => false
             ));
 
         if (in_array('name',$this->getAttrArray())) {
@@ -58,6 +80,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
                     'header' => Mage::helper('catalog')->__('Name to translate'),
                     'index' => 'name',
                     'filter' => false,
+                    'sortable'  => false
                 ));
         }
         else{
@@ -66,6 +89,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
                     'header' => Mage::helper('catalog')->__('Name'),
                     'index' => 'name',
                     'filter' => false,
+                    'sortable'  => false
                 ));
         }
 
@@ -75,6 +99,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
                 'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_Path',
                 'index' => 'path',
                 'filter' => false,
+                'sortable'  => false
             ));
 
         foreach ($this->getAttrArray() as $attr){
@@ -85,9 +110,25 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
                         'header' => Mage::helper('catalog')->__($attrModel->getFrontendLabel()) .' to Translate',
                         'index' => $attr,
                         'filter' => false,
+                        'sortable'  => false
                     ));
             }
         }
+
+        $this->addColumn('version',
+            array(
+                'header'=> Mage::helper('catalog')->__('Translated'),
+                'width' => '70px',
+                'index' => 'version',
+                'type'  => 'options',
+                'filter' => false,
+                'sortable'  => false,
+                'options' => array(
+                    1    => Mage::helper('catalog')->__('Translated'),
+                    ''   => Mage::helper('catalog')->__('Not Translated')
+                )
+            ));
+
 
         return parent::_prepareColumns();
     }

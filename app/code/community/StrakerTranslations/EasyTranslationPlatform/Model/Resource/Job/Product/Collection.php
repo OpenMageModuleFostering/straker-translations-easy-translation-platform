@@ -13,4 +13,15 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Resource_Job_Product_Col
         $this->_init('strakertranslations_easytranslationplatform/job_product');
     }
 
+    public function getAllIds()
+    {
+        $idsSelect = clone $this->getSelect();
+        $idsSelect->reset(Zend_Db_Select::ORDER);
+        $idsSelect->reset(Zend_Db_Select::LIMIT_COUNT);
+        $idsSelect->reset(Zend_Db_Select::LIMIT_OFFSET);
+        $idsSelect->reset(Zend_Db_Select::COLUMNS);
+
+        $idsSelect->columns('product_id', 'main_table');
+        return $this->getConnection()->fetchCol($idsSelect);
+    }
 }

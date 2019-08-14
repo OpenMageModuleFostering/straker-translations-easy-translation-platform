@@ -25,6 +25,10 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_
             elseif ($row->getStatusName() == 'COMPLETED') {
                 $html = $this->__('Ready to Publish');
             }
+            //else if status is PUBLISHED
+            elseif ($row->getStatusName() == 'PUBLISHED') {
+                $html = $this->__('Published');
+            }
             return $html;
         }
 

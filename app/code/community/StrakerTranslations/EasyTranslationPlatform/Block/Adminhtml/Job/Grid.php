@@ -12,6 +12,16 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Grid exten
 
     protected function _prepareCollection() {
         $collection = Mage::getModel('strakertranslations_easytranslationplatform/job')->getCollection();
+
+        foreach($collection as $jobModel){
+            if($jobModel->getStatusId() == 4){
+                $jobModel->load($jobModel->getId())->isPublished();
+            }
+        }
+
+
+        $collection = Mage::getModel('strakertranslations_easytranslationplatform/job')->getCollection();
+
         $collection->getSelect()->joinLeft(
             'straker_job_type',
             'straker_job_type.type_id = main_table.type_id',

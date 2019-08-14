@@ -12,7 +12,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Product ex
         $jobStatus = Mage::getModel('strakertranslations_easytranslationplatform/job')->load($jobId)->getStatusId();
         if ( $jobStatus == '4'){
             $this->_addButton('publish', array(
-                'label'   => Mage::helper('catalog')->__('Publish Translation'),
+                'label'   => Mage::helper('catalog')->__('Publish All Translations'),
                 'onclick' => "setLocation('{$this->getUrl('*/*/copyAll',array('job_id'=>$jobId))}');",
                 'class'   => 'task'
             ));
