@@ -57,9 +57,17 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_CategoryCont
 
     public function confirmCategoryAction(){
         $data = $this->getRequest()->getParams();
+        $data['attr'] = !empty($data['attr']) ? $data['attr'] : Mage::getSingleton('adminhtml/session')->getData('straker_new_attr');
+        $data['store'] = !empty($data['store']) ? $data['store'] : Mage::getSingleton('adminhtml/session')->getData('straker_new_store');
+        $data['category'] = !empty($data['category']) ? $data['category'] : Mage::getSingleton('adminhtml/session')->getData('straker_new_category');
         //format category
         $categoryIds = array_filter(array_unique(explode(',', $data['category'])));
-        if($data['attr'] && $data['store'] && !empty($categoryIds)) {
+        if(!empty($data['attr']) && !empty($data['store']) && !empty($categoryIds)){
+            Mage::getSingleton('adminhtml/session')
+                ->setData('straker_new_attr', $data['attr'])
+                ->setData('straker_new_store', $data['store'])
+                ->setData('straker_new_category', $data['category'])
+            ;
             return $this->_initNewAction()
                 ->_addContent(Mage::getSingleton('core/layout')->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_category_confirm', 'strakertranslations_easytranslationplatform__new_category_confirm', array('store' => $data['store'], 'attr' => $data['attr'], 'category' => $categoryIds)))
                 ->renderLayout();
@@ -97,6 +105,11 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_CategoryCont
             $jobModel->setToken('Token');
             $jobModel->submitCategories($attr_ids, explode(',',$data['category']));
             if ($jobModel->getLastStatus()) {
+                Mage::getSingleton('adminhtml/session')
+                    ->setData('straker_new_attr', '')
+                    ->setData('straker_new_store', '')
+                    ->setData('straker_new_category', '')
+                ;
                 Mage::getSingleton('adminhtml/session')->addSuccess('New job created');
                 $this->_redirect('*/straker_job/');
             }

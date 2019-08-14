@@ -6,7 +6,7 @@
 <div class="content-header">
     <table cellspacing="0">
         <tr>
-            <td><h3 class="icon-head head-products"><?php echo Mage::helper('strakertranslations_easytranslationplatform')->__('Confirm Categories to Translate') ?></h3><h3 class="store-info-heading"><?php echo Mage::helper('strakertranslations_easytranslationplatform')->renderNewJobHeading($this->getRequest()->getParam('store')) ?></h3></td>
+            <td><h3 class="icon-head head-products"><?php echo Mage::helper('strakertranslations_easytranslationplatform')->__('Confirm Categories to Translate') ?></h3><h3 class="store-info-heading"><?php echo Mage::helper('strakertranslations_easytranslationplatform')->renderNewJobHeading($this->getStore()) ?></h3></td>
         </tr>
     </table>
 </div>
@@ -17,7 +17,7 @@
     <li class="wizard-todo"><?php echo $this->__('Confirm Content') ?></li>
 </ol>
 <?php $params = Mage::app()->getRequest()->getParams(); ?>
-<a href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/straker_category/new", array('store'=>$params['store'], 'attr'=>$params['attr'], 'internal_category'=> implode(',', $this->getCategory()))) ?>"><?php echo $this->__('Edit Categories') ?></a>
+<a href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/straker_category/new", array('store'=>$this->getStore(), 'attr'=>$this->getAttr(), 'internal_category'=> implode(',', $this->getCategory()))) ?>"><?php echo $this->__('Edit Categories') ?></a>
 <form id="submit-new-job-form" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/straker_category/submitjob") ?>" method="post">
     <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" >
     <input type="hidden" name="category" value="<?php echo implode(',', $this->getCategory()) ?>" >

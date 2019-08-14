@@ -11,6 +11,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(false);
         $this->setVarNameFilter('category_filter');
+        $this->setTemplate('straker/new/category/confirm/grid.phtml');
     }
 
     protected function _getStore()

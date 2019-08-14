@@ -57,7 +57,18 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_AttributeCon
 
     public function addtoconfirmAction(){
         $data = $this->getRequest()->getParams();
+        if(empty($data['attribute']) && empty($data['option'])){
+            $data['attribute'] =  Mage::getSingleton('adminhtml/session')->getData('straker_new_attribute');
+            $data['option'] = Mage::getSingleton('adminhtml/session')->getData('straker_new_option');
+        }
+        $data['store'] = !empty($data['store']) ? $data['store'] : Mage::getSingleton('adminhtml/session')->getData('straker_new_store');
+
         if( $data['store'] && ($data['attribute'] || $data['option']) ){
+            Mage::getSingleton('adminhtml/session')
+                ->setData('straker_new_attribute', $data['attribute'])
+                ->setData('straker_new_option', $data['option'])
+                ->setData('straker_new_store', $data['store'])
+            ;
             return $this->_initAction()
                 ->_addContent(Mage::getSingleton('core/layout')->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_attribute_confirm', 'strakertranslations_easytranslationplatform_new_attribute_confirm', array('store' => $data['store'], 'attribute' => $data['attribute']?$data['attribute']:array(), 'option' => $data['option']?$data['option']:array())))
                 ->renderLayout();

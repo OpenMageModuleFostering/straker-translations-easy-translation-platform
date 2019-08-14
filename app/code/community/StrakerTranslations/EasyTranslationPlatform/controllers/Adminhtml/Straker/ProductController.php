@@ -82,7 +82,15 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_ProductContr
 
     public function addtoconfirmAction(){
         $data = $this->getRequest()->getParams();
-        if($data['attr'] && $data['store'] && $data['product']){
+        $data['attr'] = !empty($data['attr']) ? $data['attr'] : Mage::getSingleton('adminhtml/session')->getData('straker_new_attr');
+        $data['store'] = !empty($data['store']) ? $data['store'] : Mage::getSingleton('adminhtml/session')->getData('straker_new_store');
+        $data['product'] = !empty($data['product']) ? $data['product'] : Mage::getSingleton('adminhtml/session')->getData('straker_new_product');
+        if(!empty($data['attr']) && !empty($data['store']) && !empty($data['product'])){
+            Mage::getSingleton('adminhtml/session')
+                ->setData('straker_new_attr', $data['attr'])
+                ->setData('straker_new_store', $data['store'])
+                ->setData('straker_new_product', $data['product'])
+            ;
             return $this->_initAction()
                 ->_addContent(Mage::getSingleton('core/layout')->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_products_confirm', 'strakertranslations_easytranslationplatform_new_products_confirm', array('store' => $data['store'], 'attr' => $data['attr'], 'product' => $data['product'])))
                 ->renderLayout();
@@ -119,6 +127,11 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_ProductContr
             $jobModel->setToken('Token');
             $jobModel->submitProducts($attr_ids, explode(',',$data['product']));
             if ($jobModel->getLastStatus()) {
+                Mage::getSingleton('adminhtml/session')
+                    ->setData('straker_new_attr', '')
+                    ->setData('straker_new_store', '')
+                    ->setData('straker_new_product', '')
+                ;
                 Mage::getSingleton('adminhtml/session')->addSuccess('New job created');
                 $this->_redirect('*/straker_job/');
             }

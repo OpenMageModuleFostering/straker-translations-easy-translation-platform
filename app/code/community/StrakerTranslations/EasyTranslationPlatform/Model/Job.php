@@ -631,7 +631,7 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Job extends Mage_Core_Mo
 
             $entityId= call_user_func(array($translation, 'get'.$this->getTypeName().'Id'));
 
-            if (!$updatedIds[$entityId]){
+            if (empty($updatedIds[$entityId])){
                 $updatedIds[$entityId] = true;
                 $prefix = Mage::getConfig()->getTablePrefix()->__toString();
                 $writeConnection->update($prefix.'straker_job_'.$this->_getType() ,array('version' => 1), $this->_getType()."_id = {$entityId} and job_id ={$this->getId()}"  );

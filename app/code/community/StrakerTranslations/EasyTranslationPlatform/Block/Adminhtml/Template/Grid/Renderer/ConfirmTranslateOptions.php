@@ -25,7 +25,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_
 
     protected function _getOption(){
         if(!$this->_option){
-            $this->_option = explode(',' ,$this->getRequest()->getParam('option'));
+            $this->_option = explode(',' ,Mage::getSingleton('adminhtml/session')->getData('straker_new_option'));
         }
         return $this->_option;
     }
