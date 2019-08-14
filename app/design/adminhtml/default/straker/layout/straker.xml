@@ -61,4 +61,15 @@
             <block type="strakertranslations_easytranslationplatform/adminhtml_job_category" name="strakertranslations_easytranslationplatform_job_category" />
         </reference>
     </adminhtml_straker_category_index>
+    <adminhtml_straker_attribute_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Manage Jobs</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>straker/job</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="strakertranslations_easytranslationplatform/adminhtml_job_attribute" name="strakertranslations_easytranslationplatform_job_attribute" />
+        </reference>
+    </adminhtml_straker_attribute_index>
 </layout>

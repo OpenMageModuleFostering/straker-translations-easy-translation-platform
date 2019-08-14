@@ -54,7 +54,7 @@
   display: inline-block;
 }
 .straker-main-container .store-select-container .validation-advice {
-  margin-left: 49%;
+  margin-left: 25%;
 }
 .straker-main-container .form-buttons {
   margin-top: 20px;
@@ -365,6 +365,7 @@ Temp UI Updates : Yogi
   border: 1px solid #FF8E3C;
   font-size: 13px;
   color: #fff !important;
+  margin-left: 10px;
 }
 .straker-main-container label {
   color: #565656;
@@ -451,4 +452,16 @@ ol.wizard {
 }
 .straker-store-settings-wrapper .straker-store-settings-row > .empty-button {
   display: inline-block;
+}
+.adminhtml-straker-new-index .straker-main-container .form-buttons {
+  overflow: hidden;
+}
+.adminhtml-straker-new-index .straker-main-container .form-buttons input.form-button {
+  float: right;
+}
+.content-header h3.store-info-heading {
+  margin-left: 30px;
+}
+#selectstore-form .validation-advice {
+  margin-left: 25%;
 }

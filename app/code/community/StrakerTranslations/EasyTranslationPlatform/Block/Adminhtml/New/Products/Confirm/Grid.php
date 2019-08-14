@@ -105,7 +105,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Products_C
         if (in_array('name',$this->getAttrArray())) {
             $this->addColumn('name',
                 array(
-                    'header' => Mage::helper('catalog')->__('Name to translate'),
+                    'header' => Mage::helper('catalog')->__('Name to Translate'),
                     'index' => 'name',
                     'filter' => false,
                 ));

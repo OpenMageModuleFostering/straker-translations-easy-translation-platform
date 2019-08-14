@@ -16,6 +16,16 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_JobControlle
     }
 
     public function indexAction(){
+
+        //todo refresh all jobs that is waiting on a quote. This should be refactored into different process.
+        $collection = Mage::getModel('strakertranslations_easytranslationplatform/job')
+            ->getCollection()
+            ->addFieldToFilter('status_id', 2)
+            ->addFieldToFilter('quote', array('null' => true));
+        foreach($collection as $job){
+            $job->updateQuote();
+        }
+
         $this->_title($this->__('Straker Translations'))
             ->_title($this->__('Manage Jobs'));
 

@@ -6,17 +6,18 @@
 <div class="content-header">
     <table cellspacing="0">
         <tr>
-            <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('strakertranslations_easytranslationplatform')->__('Confirm Products to be translated') ?></h3></td>
+            <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('strakertranslations_easytranslationplatform')->__('Confirm Products to Translate') ?></h3></td>
             <td class="a-right">
                 <?php echo $this->getButtonsHtml() ?>
             </td>
         </tr>
     </table>
 </div>
-<ol class="wizard" data-wizard-steps="3">
-    <li class="wizard-done">Select Product Details</li>
-    <li class="wizard-done">Select Products</li>
-    <li class="wizard-todo">Confirm Products</li>
+<ol class="wizard" data-wizard-steps="4">
+    <li class="wizard-done"><?php echo $this->__('Select Job Type') ?></li>
+    <li class="wizard-done"><?php echo $this->__('Select Details') ?></li>
+    <li class="wizard-done"><?php echo $this->__('Select Content') ?></li>
+    <li class="wizard-todo"><?php echo $this->__('Confirm Content') ?></li>
 </ol>
 <form id="submit-new-job-form" action="<?php echo Mage::helper("adminhtml")->getUrl("straker/adminhtml_new/submitjob") ?>" method="post">
     <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" >

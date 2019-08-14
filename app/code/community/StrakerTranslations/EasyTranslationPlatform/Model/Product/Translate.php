@@ -15,15 +15,21 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Product_Translate extend
 
     public function importTranslation(){
 
+        //if translated value is null, skip
+        $translatedValue = $this->getTranslate();
+        if (is_null($translatedValue)){
+            return;
+        }
+
         $product = Mage::getModel('catalog/product')->setStoreId($this->getStoreId())->load($this->getProductId());
 
         $productAttributeCode = $this->_getAttributeCode($this->getAttributeId());
 
         $this->setBackup($product->getData($productAttributeCode));
 
-        $product->setData($productAttributeCode, $this->getTranslate())
-                ->getResource()
-                ->saveAttribute($product, $productAttributeCode);
+        $product->setData($productAttributeCode, $translatedValue)
+            ->getResource()
+            ->saveAttribute($product, $productAttributeCode);
         $this->setIsImported(1)->save();
 
         $product->clearInstance();

@@ -3,7 +3,6 @@
     <menu>
         <straker>
             <title>Straker Translations</title>
-            <class>test</class>
             <label><![CDATA[<div style="position: absolute;"><img id="straker_logo" src="" alt="" border="0" /></div>&nbsp;<script>
             var n = SKIN_URL.indexOf("adminhtml");
             $('straker_logo').src = SKIN_URL.substring(0, n) + "adminhtml/default/straker/images/straker/straker-translations-logo.png";
@@ -30,6 +29,11 @@
                     <action>adminhtml/straker_new/account</action>
                     <sort_order>30</sort_order>
                 </account>
+                <terms translate="title">
+                    <title><![CDATA[Terms & Conditions]]></title>
+                    <action>adminhtml/straker_new/terms</action>
+                    <sort_order>40</sort_order>
+                </terms>
             </children>
         </straker>
     </menu>

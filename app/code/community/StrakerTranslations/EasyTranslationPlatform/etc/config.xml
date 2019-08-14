@@ -2,7 +2,7 @@
 <config>
     <modules>
         <StrakerTranslations_EasyTranslationPlatform>
-            <version>1.0.0</version>
+            <version>1.2.0</version>
         </StrakerTranslations_EasyTranslationPlatform>
     </modules>
     <global>
@@ -44,6 +44,12 @@
                     <category_attributes>
                         <table>straker_category_attributes</table>
                     </category_attributes>
+                    <job_attribute>
+                        <table>straker_job_attribute</table>
+                    </job_attribute>
+                    <straker_attribute_translate>
+                        <table>straker_attribute_translate</table>
+                    </straker_attribute_translate>
                 </entities>
             </strakertranslations_easytranslationplatform_resource>
         </models>

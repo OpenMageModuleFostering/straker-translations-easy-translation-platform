@@ -34,9 +34,10 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
         }
 
         //join straker job product table to get version for each product
+        $prefix = Mage::getConfig()->getTablePrefix()->__toString();
         $collection->getSelect()->joinLeft(
-            'straker_job_category',
-            'straker_job_category.category_id = e.entity_id',
+            $prefix.'straker_job_category',
+            $prefix.'straker_job_category.category_id = e.entity_id',
             'version'
         );
 
@@ -77,7 +78,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Category_C
         if (in_array('name',$this->getAttrArray())) {
             $this->addColumn('name',
                 array(
-                    'header' => Mage::helper('catalog')->__('Name to translate'),
+                    'header' => Mage::helper('catalog')->__('Name to Translate'),
                     'index' => 'name',
                     'filter' => false,
                     'sortable'  => false

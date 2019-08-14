@@ -1,5 +1,5 @@
 <?php
-class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Confirm extends Mage_Adminhtml_Block_Widget_Container
+class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Attribute_Confirm extends Mage_Adminhtml_Block_Widget_Container
 {
     /**
      * Set template
@@ -7,7 +7,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Confirm ex
     public function __construct()
     {
         parent::__construct();
-        $this->setTemplate('straker/new/confirm.phtml');
+        $this->setTemplate('straker/new/attribute/confirm.phtml');
     }
 
     /**
@@ -20,11 +20,10 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_New_Confirm ex
         $this->_addButton('submit', array(
             'label'   => Mage::helper('catalog')->__('Submit'),
             'onclick' => "$('submit-new-job-form').submit();",
-//            'onclick' => "setLocation('{$this->getUrl('*/*/submit')}')",
             'class'   => 'task'
         ));
 
-        $this->setChild('grid', $this->getLayout()->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_confirm_grid', 'product.grid', array('store' => $this->getStore(), 'attr' => $this->getAttr(), 'product' => $this->getProduct())));
+        $this->setChild('grid', $this->getLayout()->createBlock('strakertranslations_easytranslationplatform/adminhtml_new_attribute_confirm_grid', 'product.grid', array('store' => $this->getStore(), 'attribute' => $this->getAttribute(), 'option' => $this->getOption())));
         return parent::_prepareLayout();
     }
 

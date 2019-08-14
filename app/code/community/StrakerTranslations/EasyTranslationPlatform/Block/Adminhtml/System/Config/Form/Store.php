@@ -42,7 +42,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_System_Config_
         }
         else{
 
-            return '<div class="empty-button">'.$this->__('No settings found.').'</div>';
+            return '<div class="empty-button">'.$this->__('No language settings applied').'</div>';
         }
     }
 }

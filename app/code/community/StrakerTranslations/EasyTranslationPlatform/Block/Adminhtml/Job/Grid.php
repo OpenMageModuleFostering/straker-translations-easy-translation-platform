@@ -23,19 +23,19 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Grid exten
         $collection = Mage::getModel('strakertranslations_easytranslationplatform/job')->getCollection();
 
         $collection->getSelect()->joinLeft(
-            'straker_job_type',
-            'straker_job_type.type_id = main_table.type_id',
+            Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_type'),
+            Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_type').'.type_id = main_table.type_id',
             'type_name'
         );
         $collection->getSelect()->joinLeft(
-            'straker_job_status',
-            'straker_job_status.status_id = main_table.status_id',
+            Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_status'),
+            Mage::getSingleton('core/resource')->getTableName('strakertranslations_easytranslationplatform/job_status').'.status_id = main_table.status_id',
             'status_name'
 
         );
         $collection->getSelect()->joinLeft(
-            'core_store',
-            'core_store.store_id = main_table.store_id',
+            Mage::getSingleton('core/resource')->getTableName('core/store'),
+            Mage::getSingleton('core/resource')->getTableName('core/store').'.store_id = main_table.store_id',
             'name'
         );
         $this->setCollection($collection);
@@ -71,26 +71,33 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Grid exten
         ));
 
         $this->addColumn('type_name', array(
-            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Type'),
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Content Type'),
             'align' => 'left',
             'index' => 'type_name',
         ));
 
+        $this->addColumn('selected', array(
+          'header'    => Mage::helper('strakertranslations_easytranslationplatform')->__('Content Selected'),
+          'renderer' => 'StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Template_Grid_Renderer_Selected',
+          'align'    => 'center',
+          'filter'    => false,
+        ));
+
         $this->addColumn('name', array(
-            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Store'),
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Store View'),
             'align' => 'left',
             'index' => 'name',
-            'filter_index' =>'core_store.name',
+            'filter_index' => Mage::getSingleton('core/resource')->getTableName('core/store').'.name',
         ));
 
         $this->addColumn('sl', array(
-            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Language From'),
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Source Language'),
             'align' => 'left',
             'index' => 'sl',
         ));
 
         $this->addColumn('tl', array(
-            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Language To'),
+            'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('Target Language'),
             'align' => 'left',
             'index' => 'tl',
         ));

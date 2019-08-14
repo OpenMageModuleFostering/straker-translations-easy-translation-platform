@@ -11,7 +11,7 @@ $installer = $this;
 $installer->startSetup();
 
 try {
-  $installer->run("    CREATE TABLE `straker_actionlog` (
+  $installer->run("    CREATE TABLE IF NOT EXISTS `straker_actionlog` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
   `action` varchar(255) DEFAULT NULL,
@@ -23,7 +23,7 @@ try {
   CONSTRAINT `straker_actionlog_ibfk_1` FOREIGN KEY (`id`) REFERENCES `admin_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `straker_apilog` (
+CREATE TABLE IF NOT EXISTS `straker_apilog` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `method` varchar(255) NOT NULL DEFAULT '',
   `request` text,
@@ -32,7 +32,7 @@ CREATE TABLE `straker_apilog` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `straker_job` (
+CREATE TABLE IF NOT EXISTS `straker_job` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `type_id` tinyint(3) unsigned NOT NULL,
   `source_store` smallint(5) unsigned NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `straker_job` (
   CONSTRAINT `straker_job_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `straker_job_status` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `straker_job_product` (
+CREATE TABLE IF NOT EXISTS `straker_job_product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(10) unsigned NOT NULL,
   `job_id` int(11) unsigned NOT NULL,
@@ -73,30 +73,30 @@ CREATE TABLE `straker_job_product` (
   CONSTRAINT `straker_job_product_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `straker_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `straker_job_status` (
+CREATE TABLE IF NOT EXISTS `straker_job_status` (
   `status_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `status_name` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `straker_job_status` (`status_id`, `status_name`)
+REPLACE INTO `straker_job_status` (`status_id`, `status_name`)
 VALUES
 	(1,'INIT'),
 	(2,'QUEUED'),
 	(3,'IN_PROGRESS'),
 	(4,'COMPLETED');
 
-CREATE TABLE `straker_job_type` (
+CREATE TABLE IF NOT EXISTS `straker_job_type` (
   `type_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `type_name` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `straker_job_type` (`type_id`, `type_name`)
+REPLACE INTO `straker_job_type` (`type_id`, `type_name`)
 VALUES
 	(1,'Product');
 
-CREATE TABLE `straker_product_attributes` (
+CREATE TABLE IF NOT EXISTS `straker_product_attributes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` int(10) unsigned NOT NULL,
   `attribute_id` smallint(5) unsigned NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE `straker_product_attributes` (
   CONSTRAINT `straker_product_attributes_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `straker_product_translate` (
+CREATE TABLE IF NOT EXISTS `straker_product_translate` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` int(11) unsigned NOT NULL,
   `product_id` int(10) unsigned NOT NULL,
@@ -124,12 +124,10 @@ CREATE TABLE `straker_product_translate` (
   CONSTRAINT `straker_product_translate_ibfk_4` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-    ");
-  $installer->run("
-INSERT INTO `straker_job_type` (`type_id`, `type_name`)
-VALUES (2,'Category');
+REPLACE INTO `straker_job_type` (`type_id`, `type_name`)
+VALUES (3,'Category');
 
-CREATE TABLE `straker_job_category` (
+CREATE TABLE IF NOT EXISTS `straker_job_category` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` int(10) unsigned NOT NULL,
   `job_id` int(11) unsigned NOT NULL,
@@ -141,7 +139,7 @@ CREATE TABLE `straker_job_category` (
   CONSTRAINT `straker_job_category_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `straker_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `straker_category_attributes` (
+CREATE TABLE IF NOT EXISTS `straker_category_attributes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` int(10) unsigned NOT NULL,
   `attribute_id` smallint(5) unsigned NOT NULL,
@@ -152,7 +150,7 @@ CREATE TABLE `straker_category_attributes` (
   CONSTRAINT `straker_category_attributes_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `straker_category_translate` (
+CREATE TABLE IF NOT EXISTS `straker_category_translate` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` int(11) unsigned NOT NULL,
   `category_id` int(10) unsigned NOT NULL,
@@ -169,15 +167,11 @@ CREATE TABLE `straker_category_translate` (
   CONSTRAINT `straker_category_translate_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-    ");
-  $installer->run("
-
-INSERT INTO `straker_job_status` (`status_id`, `status_name`)
+REPLACE INTO `straker_job_status` (`status_id`, `status_name`)
 VALUES
 	(5, 'PUBLISHED');
+");
 
-
-    ");
 } catch (Exception $e) {
   Mage::logException($e);
 }

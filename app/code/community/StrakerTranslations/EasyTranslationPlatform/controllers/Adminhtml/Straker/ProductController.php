@@ -116,7 +116,6 @@ Class StrakerTranslations_EasyTranslationPlatform_Adminhtml_Straker_ProductContr
             $jobModel->setStoreId($data['store']);
             $jobModel->setSl($storeSetup['from']);
             $jobModel->setTl($storeSetup['to']);
-            $jobModel->setTitle('Title');
             $jobModel->setToken('Token');
             $jobModel->submitProducts($attr_ids, explode(',',$data['product']));
             if ($jobModel->getLastStatus()) {

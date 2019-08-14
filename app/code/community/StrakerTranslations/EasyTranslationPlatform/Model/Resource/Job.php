@@ -13,13 +13,14 @@ class StrakerTranslations_EasyTranslationPlatform_Model_Resource_Job extends Mag
   }
 
   protected function _getLoadSelect($field, $value, $object) {
+    $prefix = Mage::getConfig()->getTablePrefix()->__toString();
     $select = parent::_getLoadSelect($field, $value, $object)
       ->join(array('t' => $this->getTable('strakertranslations_easytranslationplatform/job_type')),
-        'straker_job.type_id=t.type_id',
+        $prefix.'straker_job.type_id=t.type_id',
         array('type_name')
       )
       ->join(array('s' => $this->getTable('strakertranslations_easytranslationplatform/job_status')),
-        'straker_job.status_id=s.status_id',
+        $prefix.'straker_job.status_id=s.status_id',
         array('status_name')
       );
 

@@ -20,4 +20,15 @@ class StrakerTranslations_EasyTranslationPlatform_Helper_Data extends Mage_Core_
         $result['to'] = Mage::getStoreConfig('straker/general/to', $storeId);
         return ($result['source'] && $result['from'] && $result['to']) ? $result : false;
     }
+
+    public function renderNewJobHeading($storeId){
+        $destinationStore = Mage::getModel('core/store')->load($storeId);
+        $destinationText = $destinationStore->getFrontendName().' ('.$destinationStore->getName().')';
+
+        $config = $this->getStoreSetup($storeId);
+        $sourceStore = Mage::getModel('core/store')->load($config['source']);
+        $sourceText = $sourceStore->getFrontendName().' ('.$sourceStore->getName().')';
+
+        return $sourceText . ' > ' . $destinationText;
+    }
 }

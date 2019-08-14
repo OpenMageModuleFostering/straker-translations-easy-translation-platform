@@ -1,10 +1,11 @@
 <div class="content-header">
-    <h3><?php echo $this->__('Create New Job') ?></h3>
+    <h3><?php echo $this->__('Create New Job') ?></h3><h3 class="store-info-heading"><?php echo Mage::helper('strakertranslations_easytranslationplatform')->renderNewJobHeading($this->getRequest()->getParam('store')) ?></h3>
 </div>
-<ol class="wizard" data-wizard-steps="3">
-    <li class="wizard-todo">Select Category Details</li>
-    <li class="wizard-todo">Select Categories</li>
-    <li class="wizard-todo">Confirm Categories</li>
+<ol class="wizard" data-wizard-steps="4">
+    <li class="wizard-done"><?php echo $this->__('Select Job Type') ?></li>
+    <li class="wizard-todo"><?php echo $this->__('Select Details') ?></li>
+    <li class="wizard-todo"><?php echo $this->__('Select Content') ?></li>
+    <li class="wizard-todo"><?php echo $this->__('Confirm Content') ?></li>
 </ol>
 <div class="straker-main-container border">
     <h1><?php echo $this->__('Categories Details') ?></h1>
@@ -29,6 +30,8 @@
                 <label for="meta_title"><?php echo $this->__('Meta Title') ?></label><br></div>
             <div class="clear"></div>
             <input type="submit" class="form-button right" value="Next" title="Next">
+            <input type="button" class="form-button right" value="Back" title="Back" onclick="window.location.href = '<?php echo $this->getUrl('*/straker_new', array('store'=> $this->getSetupStoreId())); ?>'">
+
         </div>
     </form>
 </div>

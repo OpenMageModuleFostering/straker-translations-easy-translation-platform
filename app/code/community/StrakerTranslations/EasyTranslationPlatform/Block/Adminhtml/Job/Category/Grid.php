@@ -24,7 +24,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Category_G
     }
 
     protected function _prepareCollection() {
-
+        $prefix = Mage::getConfig()->getTablePrefix()->__toString();
         $job = Mage::getModel('strakertranslations_easytranslationplatform/job')->load($this->getRequest()->getParam('job_id'));
         $jobAttributes =  Mage::getModel('strakertranslations_easytranslationplatform/category_attributes')->getCollection()->addFieldToFilter('job_id', $job->getId());
         $collection = Mage::getModel('strakertranslations_easytranslationplatform/job_category')->getCollection()->addFieldToFilter('main_table.job_id', $job->getId());
@@ -33,7 +33,7 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Category_G
         foreach($jobAttributes as $jobAttribute){
             $attributeCode = Mage::getModel('eav/entity_attribute')->load($jobAttribute->getAttributeId())->getAttributeCode();
             $collection->getSelect()->joinLeft(
-                array($attributeCode => 'straker_category_translate'),
+                array($attributeCode => $prefix.'straker_category_translate'),
                 $attributeCode.'.category_id = main_table.category_id AND '.$attributeCode.'.attribute_id = '.$jobAttribute->getAttributeId(). ' AND '
 .$attributeCode.'.job_id = '.$job->getId(),
                 array($attributeCode.'_original' => 'original', $attributeCode.'_translate' => 'translate')
@@ -73,13 +73,13 @@ class StrakerTranslations_EasyTranslationPlatform_Block_Adminhtml_Job_Category_G
             $attributeCode = Mage::getModel('eav/entity_attribute')->load($jobAttribute->getAttributeId())->getAttributeCode();
             $attrModel = Mage::getModel('eav/entity_attribute')->loadByCode(3, $attributeCode);
             $this->addColumn($attributeCode.'_original', array(
-                'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('%s Original', $attrModel->getFrontendLabel()),
+                'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('%s - Source', $attrModel->getFrontendLabel()),
                 'align' => 'left',
                 'index' => $attributeCode.'_original',
             ));
 
             $this->addColumn($attributeCode.'_translate', array(
-                'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('%s Translate', $attrModel->getFrontendLabel()),
+                'header' => Mage::helper('strakertranslations_easytranslationplatform')->__('%s - Target', $attrModel->getFrontendLabel()),
                 'align' => 'left',
                 'index' => $attributeCode.'_translate',
             ));
