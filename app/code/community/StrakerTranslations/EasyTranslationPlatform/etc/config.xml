@@ -2,7 +2,7 @@
 <config>
     <modules>
         <StrakerTranslations_EasyTranslationPlatform>
-            <version>1.3.6</version>
+            <version>1.3.7</version>
         </StrakerTranslations_EasyTranslationPlatform>
     </modules>
     <global>
@@ -98,12 +98,12 @@
     <admin>
         <routers>
             <adminhtml>
-                <args>
-                    <modules>
-                        <StrakerTranslations before="Mage_Adminhtml">StrakerTranslations_EasyTranslationPlatform_Adminhtml</StrakerTranslations>
-                    </modules>
-                </args>
-            </adminhtml>
+				<args>
+					<modules>
+						<StrakerTranslations before="Mage_Adminhtml">StrakerTranslations_EasyTranslationPlatform_Adminhtml</StrakerTranslations>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <frontend>
