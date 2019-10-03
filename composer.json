@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/straker-translations-easy-translation-platform",
+    "name": "OpenMageModuleFostering\/straker-translations-easy-translation-platform",
     "type": "magento-module",
     "license": "OSL",
     "homepage": "",
     "description": "Multilingual eCommerce extensions from the award-winning global translation company.",
     "authors": [
-    {
-        "name": "Chris",
-        "email": "extensions@strakertranslations.com"
-    }
-],
+        {
+            "name": "Chris",
+            "email": "extensions@strakertranslations.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
