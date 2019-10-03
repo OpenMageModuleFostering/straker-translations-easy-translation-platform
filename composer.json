@@ -1,7 +1,7 @@
 {
-    "name": "OpenMageModuleFostering\/straker-translations-easy-translation-platform",
+    "name": "openmage-module-fostering\/straker-translations-easy-translation-platform",
     "type": "magento-module",
-    "license": "OSL",
+    "license": "OSL-3.0",
     "homepage": "",
     "description": "Multilingual eCommerce extensions from the award-winning global translation company.",
     "authors": [
